@@ -33,10 +33,14 @@ setup(
     author='transcode',
     author_email='team@transcode.de',
     url='https://github.com/transcode-de/jinn',
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
-    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    #packages=find_packages('jinn'),
+    packages=['jinn'],
+    #package_dir={'': 'jinn'},
+    py_modules=[splitext(basename(path))[0] for path in glob('jinn/*.py')],
     include_package_data=True,
+    entry_points={
+        'console_scripts': ['jinn = jinn.main:program.run']
+    },
     zip_safe=False,
     classifiers=[
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
