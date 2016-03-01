@@ -10,7 +10,6 @@ from os.path import dirname
 from os.path import join
 from os.path import splitext
 
-from setuptools import find_packages
 from setuptools import setup
 
 
@@ -33,9 +32,8 @@ setup(
     author='transcode',
     author_email='team@transcode.de',
     url='https://github.com/transcode-de/jinn',
-    #packages=find_packages('jinn'),
     packages=['jinn'],
-    #package_dir={'': 'jinn'},
+    package_dir={'jinn': 'jinn'},
     py_modules=[splitext(basename(path))[0] for path in glob('jinn/*.py')],
     include_package_data=True,
     entry_points={

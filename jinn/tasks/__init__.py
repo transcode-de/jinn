@@ -4,7 +4,7 @@ from invoke import ctask as task
 from invoke import Collection
 from invoke.tasks import call
 
-from . import build, db, django, docs, helpers, pypi, test
+from . import build, db, django, docs, helpers, packagecloud, pypi, test
 
 
 @task(name='clean-python')
@@ -33,6 +33,13 @@ def clean_backups(ctx, force=False):
         ctx.run('find . -name \'*.swp\' -delete')
 
 
+@task(name='clean-bundles')
+def clean_bundles(ctx):
+    """Remove webpack bundle artifacts."""
+    ctx.run('rm -f {pkg_name}/webpack-stats-development.json'.format(pkg_name=ctx.pkg_name))
+    ctx.run('rm -fr {pkg_name}/static/bundles-development/'.format(pkg_name=ctx.pkg_name))
+
+
 @task
 def develop(ctx):
     """Install (or update) all packages required for development."""
@@ -48,8 +55,8 @@ def isort(ctx):
     ctx.run(command)
 
 
-ns = Collection(clean_python, clean, clean_backups, develop, build, db, django, docs, isort, pypi,
-    test)
+ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, build, db, django,
+    docs, isort, packagecloud, pypi, test)
 ns.configure({
     'base_dir': os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     'env': 'dev',

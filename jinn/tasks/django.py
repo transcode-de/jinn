@@ -6,6 +6,20 @@ from invoke import Collection
 from . import helpers
 
 
+@task(name='clean-static_root')
+def clean_static_root(ctx):
+    """Cleanup Django's STATIC_ROOT directory."""
+    ctx.run('rm -fr {pkg_name}/static_root'.format(pkg_name=ctx.pkg_name))
+    ctx.run('git checkout -- {pkg_name}/static_root'.format(pkg_name=ctx.pkg_name))
+
+
+@task
+def fixtures(ctx):
+    """Load django fixtures into database."""
+    manage(ctx, 'loaddata sites.json')
+    manage(ctx, 'loadtestdata users.User:10')
+
+
 @task(help={'command': "Django command to execute", 'env': "envdir name to use"})
 def manage(ctx, command, env=None):
     """Execute a Django command using the given env."""
@@ -51,7 +65,7 @@ def startapp(ctx, name):
     ))
 
 
-ns = Collection(manage, migrate, runserver, shell, startapp)
+ns = Collection(clean_static_root, fixtures, manage, migrate, runserver, shell, startapp)
 ns.configure({
     'django': {
         'port': 8000,
