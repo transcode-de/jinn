@@ -9,7 +9,9 @@ from invoke import Collection
 @task
 def upload(ctx):
     """Upload a release to packagecloud."""
-    if os.environ.get('PACKAGECLOUD_TOKEN'):
+    if not os.environ.get('PACKAGECLOUD_TOKEN'):
+        sys.stderr.write('PACKAGECLOUD_TOKEN environment variable is required!')
+    else:
         repository = '{user}/{repo}/{distro}'.format(
             user=ctx.packagecloud.user,
             repo=ctx.pkg_name,
@@ -20,8 +22,6 @@ def upload(ctx):
                 repository=repository,
                 pkg=pkg
             ))
-    else:
-        sys.stderr.write('PACKAGECLOUD_TOKEN environment variable is required!')
 
 
 ns = Collection(upload)
