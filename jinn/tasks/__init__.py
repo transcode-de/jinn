@@ -4,7 +4,7 @@ from invoke import ctask as task
 from invoke import Collection
 from invoke.tasks import call
 
-from . import build, db, django, docs, helpers, packagecloud, pypi, test
+from . import build, db, django, docs, helpers, packagecloud, pypi, standardjs, test
 
 
 @task(name='clean-python')
@@ -56,7 +56,7 @@ def isort(ctx):
 
 
 ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, build, db, django,
-    docs, isort, packagecloud, pypi, test)
+    docs, isort, packagecloud, pypi, standardjs, test)
 ns.configure({
     'base_dir': os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     'env': 'dev',
