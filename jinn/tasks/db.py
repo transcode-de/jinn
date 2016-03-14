@@ -1,7 +1,7 @@
 from invoke import ctask as task
 from invoke import Collection
 
-from . import helpers
+from jinn import helpers
 
 
 @task
@@ -53,10 +53,4 @@ def drop_user(ctx, env=None, force=False):
 
 
 ns = Collection(create, create_user, drop, drop_user)
-ns.configure({
-    'db': {
-        'database': 'my-project',
-        'username': 'my-project',
-        'password': 'my-project',
-    },
-})
+ns.configure(helpers.load_config_section('db', ('database', 'username')))

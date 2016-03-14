@@ -4,7 +4,7 @@ import webbrowser
 from invoke import ctask as task
 from invoke import Collection
 
-from . import helpers
+from jinn import helpers
 
 
 @task

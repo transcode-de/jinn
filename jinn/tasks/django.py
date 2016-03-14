@@ -3,7 +3,7 @@ import os
 from invoke import ctask as task
 from invoke import Collection
 
-from . import helpers
+from jinn import helpers
 
 
 @task(name='clean-static_root')
@@ -24,10 +24,10 @@ def fixtures(ctx):
 def manage(ctx, command, env=None):
     """Execute a Django command using the given env."""
     command = 'python {manage_py} {command}'.format(
-        manage_py=os.path.join(ctx.base_dir, 'manage.py'),
+        manage_py=os.path.join('manage.py'),
         command=command
     )
-    ctx.run(helpers.envdir(ctx, command, env=env or ctx.env))
+    ctx.run(helpers.envdir(ctx, command, env=env or ctx.default_env))
 
 
 @task(help={'port': "Port to use"})
@@ -66,8 +66,4 @@ def startapp(ctx, name):
 
 
 ns = Collection(clean_static_root, fixtures, manage, migrate, runserver, shell, startapp)
-ns.configure({
-    'django': {
-        'port': 8000,
-    },
-})
+ns.configure(helpers.load_config_section('django', ('port',)))

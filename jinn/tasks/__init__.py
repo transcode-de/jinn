@@ -4,7 +4,8 @@ from invoke import ctask as task
 from invoke import Collection
 from invoke.tasks import call
 
-from . import build, db, django, docs, helpers, heroku, packagecloud, pypi, standardjs, test
+from . import build, db, django, docs, heroku, packagecloud, pypi, standardjs, test
+from jinn import helpers
 
 
 @task(name='clean-python')
@@ -57,12 +58,4 @@ def isort(ctx):
 
 ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, build, db, django,
     docs, heroku, isort, packagecloud, pypi, standardjs, test)
-ns.configure({
-    'base_dir': os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    'env': 'dev',
-    'pkg_name': 'myproject',
-    'run': {
-        'echo': True,
-        'pty': True,
-    },
-})
+ns.configure(helpers.load_config_section('', ('base_dir', 'default_env', 'pkg_name')))
