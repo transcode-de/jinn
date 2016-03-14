@@ -25,7 +25,7 @@ def create_user(ctx, env=None):
 
 @task
 def drop(ctx, env=None, force=False):
-    """Drop database."""
+    """Drop the PostgreSQL database."""
     command = 'dropdb -e -U {username} {database}'.format(
         database=ctx.db.database,
         username=ctx.db.username
@@ -41,7 +41,7 @@ def drop(ctx, env=None, force=False):
 
 @task(name='drop-user')
 def drop_user(ctx, env=None, force=False):
-    """Drop database user."""
+    """Drop the PostgreSQL database user."""
     command = 'dropuser -e {username}'.format(username=ctx.db.username)
     msg = "Role \"{username}\" will be permanently removed.\nAre you sure?".format(
         username=ctx.db.username

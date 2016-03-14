@@ -11,6 +11,6 @@ def clean(ctx):
 
 @task
 def dist(ctx):
-    """Create source distribution and show content."""
+    """Package a release."""
     ctx.run('python setup.py sdist bdist_wheel')
     ctx.run('ls -l dist')

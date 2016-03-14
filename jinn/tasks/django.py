@@ -15,7 +15,7 @@ def clean_static_root(ctx):
 
 @task
 def fixtures(ctx):
-    """Load django fixtures into database."""
+    """Load fixtures for development."""
     manage(ctx, 'loaddata sites.json')
     manage(ctx, 'loadtestdata users.User:10')
 

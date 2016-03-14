@@ -35,7 +35,7 @@ def clean_backups(ctx, force=False):
 
 @task(name='clean-bundles')
 def clean_bundles(ctx):
-    """Remove webpack bundle artifacts."""
+    """Remove webpack development bundles."""
     ctx.run('rm -f {pkg_name}/webpack-stats-development.json'.format(pkg_name=ctx.pkg_name))
     ctx.run('rm -fr {pkg_name}/static/bundles-development/'.format(pkg_name=ctx.pkg_name))
 
