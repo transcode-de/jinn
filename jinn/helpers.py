@@ -18,7 +18,7 @@ INVOKE_CONFIG = {
 def envdir(ctx, command, env=None):
     """Helper to wrap command in envdir command with given env."""
     return 'envdir {envdir} {command}'.format(
-        envdir=os.path.join('envs', env),
+        envdir=os.path.join('envs', env or 'dev'),
         command=command
     )
 
