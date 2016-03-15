@@ -1,11 +1,10 @@
 import configparser
 import importlib
 import os
-import sys
-import logging
 from distutils.util import strtobool
 
-logger = logging.getLogger('jinn-helper')
+from jinn import exceptions
+
 CONFIG_FILE = 'setup.cfg'
 
 INVOKE_CONFIG = {
@@ -36,46 +35,47 @@ def confirmation_prompt(question):
 
 def load_config_section(section, keys):
     """Helper to load config sections from setup.cfg."""
-    if os.path.exists(CONFIG_FILE):
+    try:
         config = configparser.ConfigParser()
+        config.read_file(open(CONFIG_FILE))
         config.read(CONFIG_FILE)
         if section:
             prefixed_section = 'jinn:{section}'.format(section=section)
         else:
             prefixed_section = 'jinn'
-        if prefixed_section in config.sections():
-            section_config = dict(config.items(prefixed_section))
-            if set(keys) <= set(section_config.keys()):
-                if section:
-                    return {section:section_config}
-                else:
-                    return section_config
+        config_section = dict(config.items(prefixed_section))
+        if set(keys) <= set(config_section.keys()):
+            if section:
+                return {section: config_section}
             else:
-                msg = "".join([
-                    "You need the keys \'{keys}\' in section \'{prefixed_section}\'",
-                    "\nBut you only have the keys \'{config_keys}\'."
-                ]).format(
-                    keys=', '.join(keys),
-                    prefixed_section=prefixed_section,
-                    config_keys=', '.join(section_config.keys())
-                )
+                return config_section
         else:
             msg = "".join([
+                "You need the keys \'{keys}\' in section \'{prefixed_section}\'",
+                "\nBut you only have the keys \'{config_keys}\'."
+            ]).format(
+                keys=', '.join(keys),
+                prefixed_section=prefixed_section,
+                config_keys=', '.join(config_section.keys())
+            )
+            raise exceptions.ConfigurationFileSectionKeysMissingError(msg)
+    except FileNotFoundError as f:
+        msg = "".join([
+            "Can not find a configuration file '{CONFIG_FILE}' in the current working"
+            " directory."
+            ]).format(
+                CONFIG_FILE=CONFIG_FILE
+            )
+        raise exceptions.ConfigurationFileNotFoundError(f, msg)
+    except configparser.NoSectionError as n:
+        msg = "".join([
                 "There is no section \'{prefixed_section}\', but there should be one",
                 " in the configuration file \'{CONFIG_FILE}\'."
             ]).format(
                 prefixed_section=prefixed_section,
                 CONFIG_FILE=CONFIG_FILE
             )
-    else:
-        msg = "".join([
-            "Can not find a configuration file \'{CONFIG_FILE}\' in the current working"
-            " directory."
-            ]).format(
-                CONFIG_FILE=CONFIG_FILE
-            )
-    logger.error(msg)
-    sys.exit(os.EX_CONFIG)
+        raise exceptions.ConfigurationFileSectionNotFoundError(msg)
 
 
 def add_tasks(ns, tasks):
