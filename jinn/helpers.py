@@ -1,4 +1,5 @@
 import configparser
+import importlib
 import os
 import sys
 import logging
@@ -44,7 +45,7 @@ def load_config_section(section, keys):
             prefixed_section = 'jinn'
         if prefixed_section in config.sections():
             section_config = dict(config.items(prefixed_section))
-            if set(keys) == set(section_config.keys()):
+            if set(keys) <= set(section_config.keys()):
                 if section:
                     return {section:section_config}
                 else:
@@ -75,3 +76,10 @@ def load_config_section(section, keys):
             )
     logger.error(msg)
     sys.exit(os.EX_CONFIG)
+
+
+def add_tasks(ns, tasks):
+    if tasks is not None:
+        for module_name in tasks.splitlines():
+            if module_name:
+                ns.add_collection(importlib.import_module(module_name))

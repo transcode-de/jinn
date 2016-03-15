@@ -4,7 +4,7 @@ from invoke import ctask as task
 from invoke import Collection
 from invoke.tasks import call
 
-from . import build, db, django, docs, heroku, packagecloud, pypi, standardjs, test
+from . import build, docs, test
 from jinn import helpers
 
 
@@ -56,7 +56,11 @@ def isort(ctx):
     ctx.run(command)
 
 
-ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, build, db, django,
-    docs, heroku, isort, packagecloud, pypi, standardjs, test)
-ns.configure(helpers.load_config_section('', ('base_dir', 'default_env', 'pkg_name')))
+ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, isort, build, docs, test)
+jinn_config = helpers.load_config_section('', ('base_dir', 'default_env', 'pkg_name'))
+
+if jinn_config.get('tasks'):
+    helpers.add_tasks(ns, jinn_config.pop('tasks'))
+
 ns.configure(helpers.INVOKE_CONFIG)
+ns.configure(jinn_config)
