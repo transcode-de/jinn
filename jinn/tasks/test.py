@@ -31,7 +31,7 @@ def coverage(ctx, env=None):
 
 @task(pre=[coverage], name='coverage-html')
 def coverage_html(ctx):
-    """Generate and open a HTML coverage report with the default Python and open it in the default browser."""
+    """Generate and open a HTML coverage report with the default Python and open it in the default browser."""  # noqa
     uri = 'file://{cwd}/htmlcov/index.html'.format(cwd=os.getcwd())
     ctx.run('coverage html')
     webbrowser.open(uri)

@@ -1,5 +1,3 @@
-import os
-
 from invoke import ctask as task
 from invoke import Collection
 from invoke.tasks import call
@@ -56,7 +54,8 @@ def isort(ctx):
     ctx.run(command)
 
 
-ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, isort, build, docs, test)
+ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, isort, build, docs,
+    test)
 jinn_config = helpers.load_config_section('', ('base_dir', 'default_env', 'pkg_name'))
 
 if jinn_config.get('tasks'):

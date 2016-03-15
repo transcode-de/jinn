@@ -1,7 +1,7 @@
-import os, sys
+import os
+import sys
 
 from invoke import ctask as task
-from invoke import Collection
 
 from . import build
 
@@ -23,11 +23,12 @@ def deploy(ctx):
             sys.stderr.write('HEROKU_API_KEY environment variable is required!')
         else:
             app_name = '{ctx.pkg_name}-staging'.format(ctx=ctx)
-            ctx.run('heroku pg:backups capture DATABASE_URL --app {}'.format(app_name)
+            ctx.run('heroku pg:backups capture DATABASE_URL --app {}'.format(app_name))
             ctx.run('bin/deploy --app {} --version $$(git describe --tags)'.format(app_name))
             heroku_run(ctx, app=app_name, command='site-admin check --deploy')
             heroku_run(ctx, app=app_name, command='site-admin migrate')
             heroku_run(ctx, app=app_name, command='site-admin raven test')
+
 
 @task
 def promote(ctx):
@@ -44,5 +45,5 @@ def heroku_run(ctx, app, command):
     """Helper to wrap command with heroku run."""
     ctx.run('heroku run --app {app} --exit-code {command}'.format(
         app=app,
-        comand=comand
+        command=command
     ))

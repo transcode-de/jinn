@@ -1,6 +1,5 @@
 import os
 import sys
-import webbrowser
 
 from invoke import ctask as task
 from invoke import Collection

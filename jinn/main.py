@@ -1,6 +1,6 @@
 from invoke import Collection, Program
 from invoke.parser import ParserContext
-from . import tasks
+from jinn import tasks
 
 
 class MyProgram(Program):

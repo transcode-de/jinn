@@ -5,7 +5,6 @@ class ConfigurationFileNotFoundError(FileNotFoundError):
     pass
 
 
-
 class ConfigurationFileSectionNotFoundError(NoSectionError):
     pass
 

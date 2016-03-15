@@ -1,10 +1,13 @@
 import configparser
 import importlib
 import os
+import logging
 from distutils.util import strtobool
 
 from jinn import exceptions
 
+
+logger = logging.getLogger(__name__)
 CONFIG_FILE = 'setup.cfg'
 
 INVOKE_CONFIG = {
@@ -63,18 +66,18 @@ def load_config_section(section, keys):
         msg = "".join([
             "Can not find a configuration file '{CONFIG_FILE}' in the current working"
             " directory."
-            ]).format(
-                CONFIG_FILE=CONFIG_FILE
-            )
+        ]).format(
+            CONFIG_FILE=CONFIG_FILE
+        )
         raise exceptions.ConfigurationFileNotFoundError(f, msg)
-    except configparser.NoSectionError as n:
+    except configparser.NoSectionError:
         msg = "".join([
-                "There is no section \'{prefixed_section}\', but there should be one",
-                " in the configuration file \'{CONFIG_FILE}\'."
-            ]).format(
-                prefixed_section=prefixed_section,
-                CONFIG_FILE=CONFIG_FILE
-            )
+            "There is no section \'{prefixed_section}\', but there should be one",
+            " in the configuration file \'{CONFIG_FILE}\'."
+        ]).format(
+            prefixed_section=prefixed_section,
+            CONFIG_FILE=CONFIG_FILE
+        )
         raise exceptions.ConfigurationFileSectionNotFoundError(msg)
 
 
