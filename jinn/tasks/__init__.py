@@ -2,8 +2,9 @@ from invoke import ctask as task
 from invoke import Collection
 from invoke.tasks import call
 
-from . import build, docs, test
 from jinn import helpers
+
+from . import build, docs, test
 
 
 @task(name='clean-python')
@@ -50,7 +51,7 @@ def develop(ctx):
 @task
 def isort(ctx):
     """Run isort to correct imports order."""
-    command = 'isort --recursive setup.py {ctx.pkg_name}/ tasks/ tests/'.format(ctx=ctx)
+    command = 'isort --recursive setup.py {ctx.pkg_name}/tasks/ tests/'.format(ctx=ctx)
     ctx.run(command)
 
 

@@ -1,11 +1,10 @@
 import configparser
 import importlib
-import os
 import logging
+import os
 from distutils.util import strtobool
 
 from jinn import exceptions
-
 
 logger = logging.getLogger(__name__)
 CONFIG_FILE = 'setup.cfg'
