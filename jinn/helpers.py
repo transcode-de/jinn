@@ -53,11 +53,11 @@ def load_config_section(section, keys):
             else:
                 msg = "".join([
                     "You need the keys \'{keys}\' in section \'{prefixed_section}\'",
-                    " But you only have the keys \'{config_keys}\'."
+                    "\nBut you only have the keys \'{config_keys}\'."
                 ]).format(
-                    keys=keys,
+                    keys=', '.join(keys),
                     prefixed_section=prefixed_section,
-                    config_keys=section_config.keys()
+                    config_keys=', '.join(section_config.keys())
                 )
         else:
             msg = "".join([
