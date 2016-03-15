@@ -12,9 +12,8 @@ def upload(ctx):
     if not os.environ.get('PACKAGECLOUD_TOKEN'):
         sys.stderr.write('PACKAGECLOUD_TOKEN environment variable is required!')
     else:
-        repository = '{user}/{repo}/{distro}'.format(
-            user=ctx.packagecloud.user,
-            repo=ctx.pkg_name,
+        repository = '{ctx.packagecloud.user}/{ctx.pkg_name}/{distro}'.format(
+            ctx=ctx,
             distro='python',
         )
         for pkg in os.listdir('dist'):

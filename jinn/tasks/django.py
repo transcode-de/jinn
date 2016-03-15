@@ -9,8 +9,8 @@ from jinn import helpers
 @task(name='clean-static_root')
 def clean_static_root(ctx):
     """Cleanup Django's STATIC_ROOT directory."""
-    ctx.run('rm -fr {pkg_name}/static_root'.format(pkg_name=ctx.pkg_name))
-    ctx.run('git checkout -- {pkg_name}/static_root'.format(pkg_name=ctx.pkg_name))
+    ctx.run('rm -fr {ctx.pkg_name}/static_root'.format(ctx=ctx))
+    ctx.run('git checkout -- {ctx.pkg_name}/static_root'.format(ctx=ctx))
 
 
 @task
@@ -33,7 +33,7 @@ def manage(ctx, command, env=None):
 @task(help={'port': "Port to use"})
 def runserver(ctx, port=None):
     """Start Django's development Web server."""
-    manage(ctx, 'runserver {0}'.format(port or ctx.django.port))
+    manage(ctx, 'runserver {}'.format(port or ctx.django.port))
 
 
 @task
@@ -55,13 +55,13 @@ def startapp(ctx, name):
     os.mkdir(directory)
     manage(ctx, ' '.join(('startapp', name, directory)))
     message = "".join((
-        "Don't forget to add '{pkg_name}.apps.{app_name}.apps.",
+        "Don't forget to add '{ctx.pkg_name}.apps.{app_name}.apps.",
         "{app_name_title}Config' to INSTALLED_APPS in '{pkg_name}.config/settings/common.py'!"
     ))
     print(message.format(
         app_name=name,
         app_name_title=name.title(),
-        pkg_name=ctx.pkg_name,
+        ctx=ctx
     ))
 
 

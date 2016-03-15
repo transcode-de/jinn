@@ -22,12 +22,9 @@ def deploy(ctx):
         if not os.environ.get('HEROKU_API_KEY'):
             sys.stderr.write('HEROKU_API_KEY environment variable is required!')
         else:
-            app_name = '{pkg_name}-staging'.format(pkg_name=ctx.pkg_name)
-            ctx.run('heroku pg:backups capture DATABASE_URL --app {app_name}'.format(
-                app_name=app_name)
-            )
-            ctx.run('bin/deploy --app {app_name} --version $$(git describe --tags)'.format(
-                app_name=app_name))
+            app_name = '{ctx.pkg_name}-staging'.format(ctx=ctx)
+            ctx.run('heroku pg:backups capture DATABASE_URL --app {}'.format(app_name)
+            ctx.run('bin/deploy --app {} --version $$(git describe --tags)'.format(app_name))
             heroku_run(ctx, app=app_name, command='site-admin check --deploy')
             heroku_run(ctx, app=app_name, command='site-admin migrate')
             heroku_run(ctx, app=app_name, command='site-admin raven test')
@@ -35,9 +32,9 @@ def deploy(ctx):
 @task
 def promote(ctx):
     """Promote the staging release to production on Heroku."""
-    app_name = '{pkg_name}-production'.format(pkg_name=ctx.pkg_name)
-    ctx.run('heroku pg:backups capture DATABASE_URL --app {app_name}'.format(app_name=app_name))
-    ctx.run('heroku pipelines:promote --app pkg_name-staging'.format(pkg_name=ctx.pkg_name))
+    app_name = '{ctx.pkg_name}-production'.format(ctx=ctx)
+    ctx.run('heroku pg:backups capture DATABASE_URL --app {}'.format(app_name))
+    ctx.run('heroku pipelines:promote --app {ctx.pkg_name}-staging'.format(ctx=ctx))
     heroku_run(ctx, app=app_name, command='site-admin check --deploy')
     heroku_run(ctx, app=app_name, command='site-admin migrate')
     heroku_run(ctx, app=app_name, command='site-admin raven test')

@@ -37,8 +37,8 @@ def clean_backups(ctx, force=False):
 @task(name='clean-bundles')
 def clean_bundles(ctx):
     """Remove webpack development bundles."""
-    ctx.run('rm -f {pkg_name}/webpack-stats-development.json'.format(pkg_name=ctx.pkg_name))
-    ctx.run('rm -fr {pkg_name}/static/bundles-development/'.format(pkg_name=ctx.pkg_name))
+    ctx.run('rm -f {ctx.pkg_name}/webpack-stats-development.json'.format(ctx=ctx))
+    ctx.run('rm -fr {ctx.pkg_name}/static/bundles-development/'.format(ctx=ctx))
 
 
 @task
@@ -52,7 +52,7 @@ def develop(ctx):
 @task
 def isort(ctx):
     """Run isort to correct imports order."""
-    command = 'isort --recursive setup.py {pkg_name}/ tasks/ tests/'.format(pkg_name=ctx.pkg_name)
+    command = 'isort --recursive setup.py {ctx.pkg_name}/ tasks/ tests/'.format(ctx=ctx)
     ctx.run(command)
 
 
