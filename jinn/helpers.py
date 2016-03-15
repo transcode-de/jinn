@@ -48,7 +48,6 @@ def load_config_section(section, keys):
                 if section:
                     return {section:section_config}
                 else:
-                    section_config.update(INVOKE_CONFIG)
                     return section_config
             else:
                 msg = "".join([

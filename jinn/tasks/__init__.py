@@ -59,3 +59,4 @@ def isort(ctx):
 ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, build, db, django,
     docs, heroku, isort, packagecloud, pypi, standardjs, test)
 ns.configure(helpers.load_config_section('', ('base_dir', 'default_env', 'pkg_name')))
+ns.configure(helpers.INVOKE_CONFIG)
