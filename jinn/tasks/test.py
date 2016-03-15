@@ -25,7 +25,7 @@ def clean(ctx):
 @task
 def coverage(ctx, env=None):
     """Generate a coverage report with the default Python."""
-    ctx.run(helpers.envdir(ctx, 'coverage run -m pytest tests/', env or ctx.env))
+    ctx.run(helpers.envdir(ctx, 'coverage run -m pytest tests/', env or ctx.default_env))
     ctx.run('coverage report')
 
 
@@ -41,7 +41,7 @@ def coverage_html(ctx):
 def run(ctx, test_args='', env=None):
     """Run unit tests quickly with the default Python."""
     command = 'py.test {test_args} tests/'.format(test_args=test_args)
-    ctx.run(helpers.envdir(ctx, command, env or ctx.env))
+    ctx.run(helpers.envdir(ctx, command, env or ctx.default_env))
 
 
 ns = Collection(all, clean, coverage, coverage_html, run)

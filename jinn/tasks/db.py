@@ -12,14 +12,14 @@ def create(ctx, env=None):
         ' -T template0 -e {database}'
     ))
     command = command.format(database=ctx.db.database, username=ctx.db.username)
-    ctx.run(helpers.envdir(ctx, command, env or ctx.env))
+    ctx.run(helpers.envdir(ctx, command, env or ctx.default_env))
 
 
 @task(name='create-user')
 def create_user(ctx, env=None):
     """Create a new PostgreSQL user."""
     ctx.run(helpers.envdir(ctx, 'createuser -d -e {username}'.format(
-        username=ctx.db.username), env or ctx.env,
+        username=ctx.db.username), env or ctx.default_env,
     ))
 
 
@@ -36,7 +36,7 @@ def drop(ctx, env=None, force=False):
     if not force:
         answer = helpers.confirmation_prompt(msg)
     if force or answer:
-        ctx.run(helpers.envdir(ctx, command, env or ctx.env))
+        ctx.run(helpers.envdir(ctx, command, env or ctx.default_env))
 
 
 @task(name='drop-user')
@@ -49,7 +49,7 @@ def drop_user(ctx, env=None, force=False):
     if not force:
         answer = helpers.confirmation_prompt(msg)
     if force or answer:
-        ctx.run(helpers.envdir(ctx, command, env or ctx.env))
+        ctx.run(helpers.envdir(ctx, command, env or ctx.default_env))
 
 
 ns = Collection(create, create_user, drop, drop_user)
