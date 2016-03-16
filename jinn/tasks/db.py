@@ -27,7 +27,7 @@ def create_user(ctx, env=None):
 def drop(ctx, env=None, force=False):
     """Drop the PostgreSQL database."""
     command = 'dropdb -e -U {ctx.db.username} {ctx.db.database}'.format(ctx=ctx)
-    msg = "Database \"{ctx.db.database}\" will be permanently removed.\nAre you sure?".format(
+    msg = "Database '{ctx.db.database}' will be permanently removed.\nAre you sure?".format(
         ctx=ctx
     )
     if not force:
@@ -40,7 +40,7 @@ def drop(ctx, env=None, force=False):
 def drop_user(ctx, env=None, force=False):
     """Drop the PostgreSQL database user."""
     command = 'dropuser -e {ctx.db.username}'.format(ctx=ctx)
-    msg = "Role \"{ctx.db.username}\" will be permanently removed.\nAre you sure?".format(ctx=ctx)
+    msg = "Role '{ctx.db.username}' will be permanently removed.\nAre you sure?".format(ctx=ctx)
     if not force:
         answer = helpers.confirmation_prompt(msg)
     if force or answer:
