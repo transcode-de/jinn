@@ -1,0 +1,4 @@
+# This file is used for testing on continuous integration servers with tox.
+
+codecov==1.6.3  # rq.filter: !=1.6.4
+tox==2.3.1
