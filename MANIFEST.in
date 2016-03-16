@@ -1,6 +1,5 @@
 graft docs
-graft examples
-graft src
+graft jinn
 graft ci
 graft tests
 
@@ -9,6 +8,7 @@ include .coveragerc
 include .cookiecutterrc
 include .editorconfig
 include .isort.cfg
+include setup.cfg
 
 include AUTHORS.rst
 include CHANGELOG.rst

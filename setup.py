@@ -7,7 +7,7 @@ import re
 from glob import glob
 from os.path import basename, dirname, join, splitext
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(*names, **kwargs):
@@ -29,7 +29,7 @@ setup(
     author='transcode',
     author_email='team@transcode.de',
     url='https://github.com/transcode-de/jinn',
-    packages=['jinn'],
+    packages=find_packages(),
     package_dir={'jinn': 'jinn'},
     py_modules=[splitext(basename(path))[0] for path in glob('jinn/*.py')],
     include_package_data=True,
