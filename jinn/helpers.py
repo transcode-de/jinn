@@ -53,8 +53,8 @@ def load_config_section(section, keys):
                 return config_section
         else:
             msg = "".join([
-                "You need the keys \'{keys}\' in section \'{prefixed_section}\'",
-                "\nBut you only have the keys \'{config_keys}\'."
+                "You need the keys '{keys}' in section '{prefixed_section}'",
+                "\nBut you only have the keys '{config_keys}'."
             ]).format(
                 keys=', '.join(keys),
                 prefixed_section=prefixed_section,
@@ -64,15 +64,16 @@ def load_config_section(section, keys):
     except FileNotFoundError as f:
         msg = "".join([
             "Can not find a configuration file '{CONFIG_FILE}' in the current working"
-            " directory."
+            " directory {cwd}."
         ]).format(
-            CONFIG_FILE=CONFIG_FILE
+            CONFIG_FILE=CONFIG_FILE,
+            cwd=os.getcwd(),
         )
         raise exceptions.ConfigurationFileNotFoundError(f, msg)
     except configparser.NoSectionError:
         msg = "".join([
-            "There is no section \'{prefixed_section}\', but there should be one",
-            " in the configuration file \'{CONFIG_FILE}\'."
+            "There is no section '{prefixed_section}', but there should be one",
+            " in the configuration file '{CONFIG_FILE}'."
         ]).format(
             prefixed_section=prefixed_section,
             CONFIG_FILE=CONFIG_FILE
