@@ -57,7 +57,7 @@ def isort(ctx):
 
 ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, isort, build, docs,
     test)
-jinn_config = helpers.load_config_section('', ('base_dir', 'default_env', 'pkg_name'))
+jinn_config = helpers.load_config_section(('base_dir', 'default_env', 'pkg_name'))
 
 if jinn_config.get('tasks'):
     helpers.add_tasks(ns, jinn_config.pop('tasks'))

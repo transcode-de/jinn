@@ -48,4 +48,4 @@ def drop_user(ctx, env=None, force=False):
 
 
 ns = Collection(create, create_user, drop, drop_user)
-ns.configure(helpers.load_config_section('db', ('database', 'username')))
+ns.configure(helpers.load_config_section(('database', 'username'), helpers.module_name(__file__)))

@@ -64,6 +64,5 @@ def startapp(ctx, name):
         ctx=ctx
     ))
 
-
 ns = Collection(clean_static_root, fixtures, manage, migrate, runserver, shell, startapp)
-ns.configure(helpers.load_config_section('django', ('port',)))
+ns.configure(helpers.load_config_section(('port',), helpers.module_name(__file__)))

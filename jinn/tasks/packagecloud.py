@@ -4,6 +4,8 @@ import sys
 from invoke import ctask as task
 from invoke import Collection
 
+from jinn import helpers
+
 
 @task
 def upload(ctx):
@@ -11,7 +13,7 @@ def upload(ctx):
     if not os.environ.get('PACKAGECLOUD_TOKEN'):
         sys.stderr.write('PACKAGECLOUD_TOKEN environment variable is required!')
     else:
-        repository = '{ctx.packagecloud.user}/{ctx.pkg_name}/{distro}'.format(
+        repository = '{ctx.packagecloud.username}/{ctx.pkg_name}/{distro}'.format(
             ctx=ctx,
             distro='python',
         )
@@ -23,8 +25,4 @@ def upload(ctx):
 
 
 ns = Collection(upload)
-ns.configure({
-    'packagecloud': {
-        'user': 'transcode',
-    },
-})
+ns.configure(helpers.load_config_section(('username',), helpers.module_name(__file__)))

@@ -1,10 +1,11 @@
 import configparser
+import inspect
 import importlib
 import logging
 import os
 from distutils.util import strtobool
 
-from jinn import exceptions
+from . import exceptions
 
 logger = logging.getLogger(__name__)
 CONFIG_FILE = 'setup.cfg'
@@ -35,19 +36,19 @@ def confirmation_prompt(question):
             logger.info("Please respond with \"y\" or \"n\".\n")
 
 
-def load_config_section(section, keys):
+def load_config_section(keys, section=None):
     """Helper to load config sections from setup.cfg."""
     try:
         config = configparser.ConfigParser()
         config.read_file(open(CONFIG_FILE))
         config.read(CONFIG_FILE)
-        if section:
+        if section is not None:
             prefixed_section = 'jinn:{section}'.format(section=section)
         else:
             prefixed_section = 'jinn'
         config_section = dict(config.items(prefixed_section))
         if set(keys) <= set(config_section.keys()):
-            if section:
+            if section is not None:
                 return {section: config_section}
             else:
                 return config_section
@@ -82,7 +83,10 @@ def load_config_section(section, keys):
 
 
 def add_tasks(ns, tasks):
-    if tasks is not None:
-        for module_name in tasks.splitlines():
-            if module_name:
-                ns.add_collection(importlib.import_module(module_name))
+    for module_name in tasks.splitlines():
+        if module_name:
+            ns.add_collection(importlib.import_module(module_name))
+
+
+def module_name(filename):
+    return inspect.getmodulename(filename)
