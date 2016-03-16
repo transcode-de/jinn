@@ -1,2 +1,7 @@
+# This file is used for all packages required for local development.
+
+-r test.txt
+-r test-local.txt
+
 envdir==0.7
 tox==2.3.1
