@@ -22,7 +22,7 @@ def clean(ctx):
     ctx.run('rm -fr htmlcov/')
 
 
-@task
+@task(help={'env': "Envdir env name to use"})
 def coverage(ctx, env=None):
     """Generate a coverage report with the default Python."""
     ctx.run(helpers.envdir(ctx, 'coverage run -m pytest tests/', env))
@@ -37,7 +37,7 @@ def coverage_html(ctx):
     webbrowser.open(uri)
 
 
-@task
+@task(help={'test_args': "Test args for py.test.", 'env': "Envdir env name to use"})
 def run(ctx, test_args='', env=None):
     """Run unit tests quickly with the default Python."""
     command = 'py.test {test_args} tests/'.format(test_args=test_args)
