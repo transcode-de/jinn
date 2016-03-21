@@ -4,6 +4,7 @@ import sys
 from invoke import ctask as task
 
 from . import build
+from jinn import exceptions
 
 
 @task(pre=[build.dist], name='compile-requirements')
@@ -16,18 +17,20 @@ def compile_requirements(ctx):
 @task
 def deploy(ctx):
     """Deploy a release to Heroku."""
-    if not os.environ.get('HEROKU_API_TOKEN'):
-        sys.stderr.write('HEROKU_API_TOKEN environment variable is required!')
-    else:
-        if not os.environ.get('HEROKU_API_KEY'):
-            sys.stderr.write('HEROKU_API_KEY environment variable is required!')
-        else:
-            app_name = '{ctx.pkg_name}-staging'.format(ctx=ctx)
-            ctx.run('heroku pg:backups capture DATABASE_URL --app {}'.format(app_name))
-            ctx.run('bin/deploy --app {} --version $$(git describe --tags)'.format(app_name))
-            heroku_run(ctx, app=app_name, command='site-admin check --deploy')
-            heroku_run(ctx, app=app_name, command='site-admin migrate')
-            heroku_run(ctx, app=app_name, command='site-admin raven test')
+    try:
+        os.environ['HEROKU_API_TOKEN']
+    except KeyError as e:
+        raise exceptions.EnvironmentVariableRequired('HEROKU_API_TOKEN')
+    try:
+        os.environ['HEROKU_API_KEY']
+    except KeyError as e:
+        raise exceptions.EnvironmentVariableRequired('HEROKU_API_KEY')
+    app_name = '{ctx.pkg_name}-staging'.format(ctx=ctx)
+    ctx.run('heroku pg:backups capture DATABASE_URL --app {}'.format(app_name))
+    ctx.run('bin/deploy --app {} --version $$(git describe --tags)'.format(app_name))
+    heroku_run(ctx, app=app_name, command='site-admin check --deploy')
+    heroku_run(ctx, app=app_name, command='site-admin migrate')
+    heroku_run(ctx, app=app_name, command='site-admin raven test')
 
 
 @task
