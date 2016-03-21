@@ -1,5 +1,6 @@
 # This file is used for all packages required for local development.
 
+-r docs.txt
 -r test.txt
 -r test-local.txt
 
