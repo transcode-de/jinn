@@ -1,7 +1,7 @@
-from jinn.tasks import heroku
-from jinn import exceptions
 import pytest
-import os
+
+from jinn import exceptions
+from jinn.tasks import heroku
 
 
 def test_compile_requirements(simple_mock_context):

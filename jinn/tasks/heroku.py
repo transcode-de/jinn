@@ -1,10 +1,10 @@
 import os
-import sys
 
 from invoke import ctask as task
 
-from . import build
 from jinn import exceptions
+
+from . import build
 
 
 @task(pre=[build.dist], name='compile-requirements')
@@ -19,11 +19,11 @@ def deploy(ctx):
     """Deploy a release to Heroku."""
     try:
         os.environ['HEROKU_API_TOKEN']
-    except KeyError as e:
+    except KeyError:
         raise exceptions.EnvironmentVariableRequired('HEROKU_API_TOKEN')
     try:
         os.environ['HEROKU_API_KEY']
-    except KeyError as e:
+    except KeyError:
         raise exceptions.EnvironmentVariableRequired('HEROKU_API_KEY')
     app_name = '{ctx.pkg_name}-staging'.format(ctx=ctx)
     ctx.run('heroku pg:backups capture DATABASE_URL --app {}'.format(app_name))

@@ -1,5 +1,6 @@
-from jinn.tasks import django
 import pytest
+
+from jinn.tasks import django
 
 
 def test_clean_static_root(mock_context):
