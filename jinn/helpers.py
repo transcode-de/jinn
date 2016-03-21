@@ -1,6 +1,6 @@
 import configparser
-import inspect
 import importlib
+import inspect
 import logging
 import os
 from distutils.util import strtobool
