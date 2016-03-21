@@ -1,9 +1,12 @@
+import logging
 import os
 
 from invoke import ctask as task
 from invoke import Collection
 
 from jinn import helpers
+
+logger = logging.getLogger(__name__)
 
 
 @task(name='clean-static_root')
@@ -56,9 +59,9 @@ def startapp(ctx, name):
     manage(ctx, ' '.join(('startapp', name, directory)))
     message = "".join((
         "Don't forget to add '{ctx.pkg_name}.apps.{app_name}.apps.",
-        "{app_name_title}Config' to INSTALLED_APPS in '{pkg_name}.config/settings/common.py'!"
+        "{app_name_title}Config' to INSTALLED_APPS in '{ctx.pkg_name}.config/settings/common.py'!"
     ))
-    print(message.format(
+    logger.info(message.format(
         app_name=name,
         app_name_title=name.title(),
         ctx=ctx
