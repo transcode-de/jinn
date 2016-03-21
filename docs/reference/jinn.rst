@@ -1,9 +1,5 @@
 jinn
 ====
 
-.. testsetup::
-
-    from jinn import *
-
-.. automodule:: jinn
+.. automodule:: jinn.tasks.build
     :members:
