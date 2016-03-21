@@ -18,3 +18,13 @@ def mock_context():
         setattr(type(mock), attribute, PropertyMock(return_value=value))
         return mock
     return get_mock_context
+
+
+@pytest.fixture
+def complex_context():
+    def get_complex_context(attribut_value_pairs):
+        mock = Mock(spec=Context)
+        for attribute, value in attribut_value_pairs:
+            setattr(type(mock), attribute, PropertyMock(return_value=value))
+        return mock
+    return get_complex_context

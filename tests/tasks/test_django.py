@@ -38,10 +38,6 @@ def test_manage(mock_context):
     assert command in result
 
 
-def test_runserver(mock_context):
-    pass
-
-
 @pytest.mark.parametrize('command', [
     'migrate',
     'shell'
@@ -53,3 +49,22 @@ def test_shell(command, mock_context):
     result = str(mock_context.mock_calls)
     assert default_env in result
     assert command in result
+
+
+def test_start_app(complex_context, mocker):
+    app_name = 'jinn'
+    pkg_name = 'my-pkg'
+    base_dir = 'base_dir'
+    default_env = 'dev'
+
+    configuration_pairs = [
+        ('pkg_name', pkg_name),
+        ('base_dir', base_dir),
+        ('default_env', default_env)
+    ]
+    mock_context = complex_context(configuration_pairs)
+    mocker.patch('os.mkdir')
+    django.startapp(mock_context, app_name)
+    result = str(mock_context.mock_calls)
+    assert app_name and pkg_name and base_dir and default_env in result
+    assert 'apps' in result
