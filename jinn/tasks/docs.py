@@ -32,7 +32,7 @@ def html(ctx, builddir=None, sphinxopts=None):
 def open_docs(ctx, builddir=None):
     """Open the project documentation in the default browser."""
     uri = 'file://{path}/{builddir}/html/index.html'.format(
-        path=os.path.join(os.getcwd(),ctx.docs.docs_dir),
+        path=os.path.join(os.getcwd(), ctx.docs.docs_dir),
         builddir=builddir or ctx.docs.build_dir
     )
     webbrowser.open(uri)
