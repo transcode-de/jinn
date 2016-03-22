@@ -22,6 +22,7 @@ def mock_context():
 
 @pytest.fixture
 def complex_context():
+    """Return a Mock object with all attributes and values attached."""
     def get_complex_context(attribut_value_pairs):
         mock = Mock(spec=Context)
         for attribute, value in attribut_value_pairs:

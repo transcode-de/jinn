@@ -85,10 +85,12 @@ def load_config_section(keys, section=None):
 
 
 def add_tasks(ns, tasks):
+    """Add tasks to given collection."""
     for module_name in tasks.splitlines():
         if module_name:
             ns.add_collection(importlib.import_module(module_name))
 
 
 def module_name(filename):
+    """Get dotted module name of given filename."""
     return inspect.getmodulename(filename)
