@@ -11,6 +11,7 @@ In first place to manage Django projects and replace a Makefile.
 
    installation
    usage
+   configuration
    contributing
    reference/index
    authors
