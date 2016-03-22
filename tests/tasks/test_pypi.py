@@ -13,6 +13,6 @@ def test_test_upload(function, command, mock_context, mocker):
     mocker.patch('webbrowser.open')
     getattr(pypi, function)(mock_context)
     result = str(mock_context.mock_calls)
-    #  pkg_name is only to open pypi in webbrowser
+    # pkg_name is only to open pypi in webbrowser
     assert pkg_name not in result
     assert command in result
