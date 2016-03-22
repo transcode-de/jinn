@@ -9,7 +9,6 @@ from . import exceptions
 
 logger = logging.getLogger(__name__)
 CONFIG_FILE = 'setup.cfg'
-
 INVOKE_CONFIG = {
     'run': {
         'echo': True,
@@ -42,8 +41,7 @@ def load_config_section(keys, section=None):
     """Helper to load config sections from setup.cfg."""
     try:
         config = configparser.ConfigParser()
-        config.read_file(open(CONFIG_FILE))
-        config.read(CONFIG_FILE)
+        config.read_file(open(determine_config_path()))
         if section is not None:
             prefixed_section = 'jinn:{section}'.format(section=section)
         else:
@@ -94,3 +92,12 @@ def add_tasks(ns, tasks):
 def module_name(filename):
     """Get dotted module name of given filename."""
     return inspect.getmodulename(filename)
+
+
+def determine_config_path():
+    """Helper to determine setup.cfg path."""
+    path = CONFIG_FILE
+    env = os.environ.get('JINN_CONFIG_PATH')
+    if env:
+        path = os.path.join(env, CONFIG_FILE)
+    return path
