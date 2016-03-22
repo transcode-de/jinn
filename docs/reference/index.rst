@@ -4,4 +4,6 @@ Reference
 .. toctree::
     :glob:
 
-    jinn*
+    jinn
+    helpers
+    exceptions

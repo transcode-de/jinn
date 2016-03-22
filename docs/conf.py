@@ -41,7 +41,7 @@ html_sidebars = {
 }
 html_short_title = '%s-%s' % (project, version)
 
-autodoc_default_flags = ['members', 'undoc-members']
+autodoc_default_flags = []
 
 
 napoleon_use_ivar = True
