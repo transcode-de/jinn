@@ -2,30 +2,58 @@
 Usage
 =====
 
-As commandline tool
-===================
+As command line tool
+====================
 
 After installation of jinn, you have to configure jinn.
 
 Configuration
 -------------
 
+Set the absolute path to the directory of your `setup.cfg` explicitly as
+environment variable::
+
+    $ export JINN_CONFIG_PATH=/Users/martin/projects/project
+
 You have to have a `setup.cfg` in the root of your project with the
-following settings::
-
-```
-[jinn]
-pkg_name = jinn
-base_dir = jinn
-default_env = dev
-
-[jinn:docs]
-docs_dir = docs
-build_dir = _build
-port = 8080
-```
+following basic settings:
 
 
+.. code-block:: ini
+
+    [jinn]
+    pkg_name = jinn
+    base_dir = jinn
+    default_env = dev
+
+    [jinn:docs]
+    docs_dir = docs/
+    build_dir = _build_dir
+    port = 8080
+
+
+If you want to use the ``jinn.tasks.django`` you only have to add the
+`dotted module path` to the `tasks` key in the `jinn section` in
+`setup.cfg`.
+
+.. code-block:: ini
+
+    [jinn]
+    pkg_name = jinn
+    base_dir = jinn
+    default_env = dev
+    tasks =
+        jinn.tasks.django
+
+
+Some modules need a corresponding `section` in `setup.cfg`. So
+``django`` does. So you have to add this section, otherwise a error will
+be thrown.
+
+.. code-block:: ini
+
+    [jinn:django]
+    port = 8000
 
 
 Run
@@ -33,43 +61,41 @@ Run
 
 You can see all basic tasks with::
 
-    jinn --list
+    $ jinn --list
 
 
-Or you type only::
+Or show the help and all basic tasks::
 
-    jinn
+    $ jinn
 
-to see the help and all basic tasks.
 
 
 The basic tasks of jinn are the tasks that are enabled by default. You
+can see the help of a specific task with::
+
+    $ jinn help test.run
+
+And a run a jinn task with the following command::
+
+    $ jinn test.run
+
+Chain tasks as you know it from a Makefile::
+
+    $ jinn docs.html docs.open
 
 
-show help of specific task::
+As a library
+============
 
-    jinn help test.run
+Write your own tasks add them to jinn configuration section under
+the key tasks.
 
+.. code-block:: ini
 
-run jinn task::
-
-    jinn test.run
-
-As library
-==========
-
-::
-
-    import jinn
-
-
-
-
-write own tasks add them with in the jinn configuration section under
-the key tasks::
-
-
-tasks =
-    jinn.tasks.django
-    myfancyapp.task
-
+    [jinn]
+    pkg_name = jinn
+    base_dir = jinn
+    default_env = dev
+    tasks =
+        jinn.tasks.django
+        myfancyapp.task
