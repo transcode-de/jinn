@@ -3,6 +3,7 @@ graft jinn
 graft tests
 graft requirements
 
+
 include .bumpversion.cfg
 include .coveragerc
 include .editorconfig
@@ -18,4 +19,5 @@ include README.rst
 include tox.ini
 .travis.yml
 
+prune docs/_build
 global-exclude *.py[cod] __pycache__ *.so *.dylib
