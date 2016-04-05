@@ -42,7 +42,7 @@ def open_docs(ctx, builddir=None):
 def serve(ctx, builddir=None, port=None):
     """Serve the project documentation in the default browser."""
     webbrowser.open('http://127.0.0.1:{0}'.format(port or ctx.docs.port))
-    command = 'cd docs/{builddir}/html; python -m SimpleHTTPServer {port}'.format(
+    command = 'cd docs/{builddir}/html; python -m http.server {port}'.format(
         builddir=builddir or ctx.docs.build_dir,
         port=port or ctx.docs.port
     )
