@@ -1,27 +1,27 @@
 import os
-import sys
 
 from invoke import ctask as task
 from invoke import Collection
 
-from jinn import helpers
+from jinn import exceptions, helpers
 
 
 @task
 def upload(ctx):
     """Upload a release to packagecloud."""
-    if not os.environ.get('PACKAGECLOUD_TOKEN'):
-        sys.stderr.write('PACKAGECLOUD_TOKEN environment variable is required!')
-    else:
-        repository = '{ctx.packagecloud.username}/{ctx.pkg_name}/{distro}'.format(
-            ctx=ctx,
-            distro='python',
-        )
-        for pkg in os.listdir('dist'):
-            ctx.run('bundle exec package_cloud push {repository} dist/{pkg}'.format(
-                repository=repository,
-                pkg=pkg
-            ))
+    try:
+        os.environ['PACKAGECLOUD_TOKEN']
+    except KeyError:
+        raise exceptions.EnvironmentVariableRequired('PACKAGECLOUD_TOKEN')
+    repository = '{ctx.packagecloud.username}/{ctx.pkg_name}/{distro}'.format(
+        ctx=ctx,
+        distro='python',
+    )
+    for pkg in os.listdir('dist'):
+        ctx.run('bundle exec package_cloud push {repository} dist/{pkg}'.format(
+            repository=repository,
+            pkg=pkg
+        ))
 
 
 ns = Collection(upload)

@@ -28,11 +28,24 @@ def test_manage(mock_context):
     assert command in result
 
 
+def test_runserver(mock_context):
+    port = 8080
+    context = mock_context(django)
+    django.runserver(context)
+    result = str(context.run.mock_calls)
+    assert context.django.port in result
+    assert 'runserver' in result
+    django.runserver(context, port)
+    result = str(context.run.mock_calls)
+    assert context.django.port in result
+    assert 'runserver' in result
+
+
 @pytest.mark.parametrize('command', [
     'migrate',
-    'shell'
+    'shell',
 ])
-def test_shell(command, mock_context):
+def test_migrate_shell(command, mock_context):
     context = mock_context(django)
     getattr(django, command)(context)
     result = str(context.run.mock_calls)
