@@ -1,7 +1,10 @@
-from unittest.mock import Mock, PropertyMock
+from unittest.mock import MagicMock, Mock
 
 import pytest
+from invoke.config import Config
 from invoke.context import Context
+
+from jinn import tasks
 
 
 @pytest.fixture
@@ -12,19 +15,14 @@ def simple_mock_context():
 
 @pytest.fixture
 def mock_context():
-    """Return a Mock object with a value attached to a attribute."""
-    def get_mock_context(attribute, value):
-        mock = Mock(spec=Context)
-        setattr(type(mock), attribute, PropertyMock(return_value=value))
-        return mock
+    '''Return module specific context with mocked run method'''
+    def get_mock_context(module=None):
+        # extend module config with general config
+        if module is not None:
+            module.ns.configure(tasks.jinn_config)
+            context = Context(config=Config(overrides=module.ns._configuration))
+        else:
+            context = Context(config=Config(overrides=tasks.jinn_config))
+        context.run = MagicMock()
+        return context
     return get_mock_context
-
-
-@pytest.fixture
-def complex_context():
-    def get_complex_context(attribut_value_pairs):
-        mock = Mock(spec=Context)
-        for attribute, value in attribut_value_pairs:
-            setattr(type(mock), attribute, PropertyMock(return_value=value))
-        return mock
-    return get_complex_context

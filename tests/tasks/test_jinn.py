@@ -19,11 +19,9 @@ def test_clean_backups(simple_mock_context):
 
 
 def test_clean_bundles(mock_context):
-    pkg_name = 'my-pkg'
-    mock_context = mock_context('pkg_name', pkg_name)
-    tasks.clean_bundles(mock_context)
-    result = str(mock_context.mock_calls)
-    assert pkg_name in result
+    context = mock_context()
+    tasks.clean_bundles(context)
+    result = str(context.run.mock_calls)
     assert result.count('rm -f') == 2
 
 
@@ -34,9 +32,7 @@ def test_develop(simple_mock_context):
 
 
 def test_isort(mock_context):
-    pkg_name = 'my-pkg'
-    mock_context = mock_context('pkg_name', pkg_name)
-    tasks.isort(mock_context)
-    result = str(mock_context.mock_calls)
-    assert pkg_name in result
+    context = mock_context()
+    tasks.isort(context)
+    result = str(context.run.mock_calls)
     assert 'isort --recursive setup.py' in result

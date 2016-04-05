@@ -1,19 +1,11 @@
-import pytest
-
 from jinn.tasks import docs
 
 
-@pytest.mark.xfail(reason='more complex mock_context is needed.')
 def test_clean(mock_context):
-    mock_context = mock_context(('docs', {'build_dir': 'build'}))
-    build_dir = 'build_dir'
-    docs.clean(mock_context)
-    result = str(mock_context.mock_calls)
-    assert '' in result
-    docs.clean(mock_context)
-    result = str(mock_context.mock_calls)
-    assert build_dir in result
-    assert 'ls -l dist' in result
+    context = mock_context(docs)
+    docs.clean(context)
+    result = str(context.run.mock_calls)
+    assert 'make -C' and 'clean BUILDDIR=' in result
 
 
 def test_html(mock_context):

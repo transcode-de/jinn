@@ -12,38 +12,33 @@ def test_compile_requirements(simple_mock_context):
 
 
 def test_deploy_environment_variables(mock_context, monkeypatch):
-    pkg_name = 'my-pkg'
-    mock_context = mock_context('pkg_name', pkg_name)
+    context = mock_context()
     with pytest.raises(exceptions.EnvironmentVariableRequired) as exception_info:
-        heroku.deploy(mock_context)
+        heroku.deploy(context)
     assert 'HEROKU_API_TOKEN' in str(exception_info.value)
     monkeypatch.setenv('HEROKU_API_TOKEN', 'my secret token')
     with pytest.raises(exceptions.EnvironmentVariableRequired) as exception_info:
-        heroku.deploy(mock_context)
+        heroku.deploy(context)
     assert 'HEROKU_API_KEY' in str(exception_info.value)
     monkeypatch.setenv('HEROKU_API_KEY', 'my secret key')
-    heroku.deploy(mock_context)
+    heroku.deploy(context)
 
 
 def test_deploy(mock_context, monkeypatch):
     monkeypatch.setenv('HEROKU_API_TOKEN', 'my secret token')
     monkeypatch.setenv('HEROKU_API_KEY', 'my secret key')
-    pkg_name = 'my-pkg'
-    mock_context = mock_context('pkg_name', pkg_name)
-    heroku.deploy(mock_context)
-    result = str(mock_context.mock_calls)
-    assert pkg_name and 'staging' in result
+    context = mock_context()
+    heroku.deploy(context)
+    result = str(context.run.mock_calls)
     assert 'heroku pg:backups capture DATABASE_URL --app' in result
     assert 'bin/deploy --app' in result
     assert result.count('site-admin') == 3
 
 
 def test_promote(mock_context):
-    pkg_name = 'my-pkg'
-    mock_context = mock_context('pkg_name', pkg_name)
-    heroku.promote(mock_context)
-    result = str(mock_context.mock_calls)
-    assert pkg_name and 'production' in result
+    context = mock_context()
+    heroku.promote(context)
+    result = str(context.run.mock_calls)
     assert 'heroku pg:backups capture DATABASE_URL --app' in result
     assert 'heroku pipelines:promote --app' in result
     assert result.count('site-admin') == 3
