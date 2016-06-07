@@ -30,8 +30,10 @@ def envdir(ctx, command, env=None):
 
 def confirmation_prompt(question):
     """Helper to ask user for confirmation."""
+    attempts = 3
     logger.info("{} (y/n)\n".format(question))
-    while True:
+    while attempts > 0:
+        attempts -= 1
         try:
             return strtobool(input().lower())
         except ValueError:
