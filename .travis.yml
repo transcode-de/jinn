@@ -1,7 +1,7 @@
 language: python
 python: 3.5
 install:
-  - pip install -r requirements/ci.txt
+  - pip install -r requirements/ci.pip
 env:
   - TOXENV=py34
   - TOXENV=py35
