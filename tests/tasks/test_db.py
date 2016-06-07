@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 
 from jinn.tasks import db
@@ -15,12 +17,17 @@ def test_create(mock_context, command, output):
     assert output in result
 
 
+@pytest.mark.parametrize('force', [
+    True,
+    False,
+])
 @pytest.mark.parametrize(('command', 'output'), [
     ('drop', 'dropdb -e -U'),
     ('drop_user', 'dropuser -e'),
 ])
-def test_drop(mock_context, command, output):
+def test_drop(mocker, mock_context, command, output, force):
+    mocker.patch('builtins.input', MagicMock(return_value='y'))
     context = mock_context(db)
-    getattr(db, command)(context, force=True)
+    getattr(db, command)(context, force=force)
     result = str(context.run.mock_calls)
     assert output in result

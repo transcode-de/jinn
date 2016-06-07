@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 from invoke.collection import Collection
 
@@ -44,3 +46,8 @@ def test_determine_config_path(monkeypatch):
     monkeypatch.delenv(env)
     path = helpers.determine_config_path()
     assert not path.startswith(config_path)
+
+
+def test_confirmation_prompt(mocker):
+    mocker.patch('builtins.input', MagicMock(return_value='y'))
+    assert helpers.confirmation_prompt('msg')
