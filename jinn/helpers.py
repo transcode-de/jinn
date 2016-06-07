@@ -7,6 +7,7 @@ from distutils.util import strtobool
 
 from . import exceptions
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 CONFIG_FILE = 'setup.cfg'
 INVOKE_CONFIG = {

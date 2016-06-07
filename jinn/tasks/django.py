@@ -6,6 +6,7 @@ from invoke import Collection
 
 from jinn import helpers
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
