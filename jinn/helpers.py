@@ -86,14 +86,14 @@ def load_config_section(keys, section=None):
 
 
 def add_tasks(ns, tasks):
-    '''Import task modules listed in config and made them available.'''
+    """Import task modules listed in config and made them available."""
     for module_name in tasks.splitlines():
         if module_name:
             ns.add_collection(importlib.import_module(module_name))
 
 
 def module_name(filename):
-    '''Get module name from file name. '''
+    """Get module name from file name."""
     return inspect.getmodulename(filename)
 
 

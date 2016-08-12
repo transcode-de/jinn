@@ -15,7 +15,7 @@ def simple_mock_context():
 
 @pytest.fixture
 def mock_context():
-    '''Return module specific context with mocked run method'''
+    """Return module specific context with mocked run method."""
     def get_mock_context(module=None):
         # extend module config with general config
         if module is not None:
