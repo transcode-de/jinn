@@ -18,4 +18,4 @@ class EnvironmentVariableRequired(Exception):
         self.env = env
 
     def __str__(self):
-        return repr('{} environment variable is required!'.format(self.env))
+        return repr("{} environment variable is required!".format(self.env))

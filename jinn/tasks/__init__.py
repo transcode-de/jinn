@@ -51,8 +51,7 @@ def develop(ctx):
 @task
 def isort(ctx):
     """Run isort to correct imports order."""
-    command = 'isort --recursive setup.py {ctx.pkg_name} tests/'.format(ctx=ctx)
-    ctx.run(command)
+    ctx.run('isort --recursive setup.py {ctx.pkg_name} tests/'.format(ctx=ctx))
 
 
 ns = Collection(clean_python, clean, clean_backups, clean_bundles, develop, isort, build, docs,
